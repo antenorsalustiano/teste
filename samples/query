@@ -1,0 +1,39 @@
+
+Consultas
+1 - Listar todos os Clientes que não tenham realizado uma compra:
+
+SELECT c.ClienteID, c.Nome
+FROM Clientes c
+LEFT JOIN Pedidos p ON c.ClienteID = p.ClienteID
+WHERE p.PedidoID IS NULL;
+
+2 - Listar os Produtos que não tenham sido comprados:
+
+SELECT p.ProdutoID, p.Nome
+FROM Produtos p
+LEFT JOIN ItensPedido ip ON p.ProdutoID = ip.ProdutoID
+WHERE ip.PedidoID IS NULL;
+
+3 - Listar os Produtos sem Estoque:
+
+SELECT p.ProdutoID, p.Nome
+FROM Produtos p
+WHERE p.Estoque = 0;
+
+4 - Agrupar a quantidade de vendas que uma determinada Marca realizou por Loja:
+
+SELECT l.Nome AS Loja, m.Nome AS Marca, SUM(ip.Quantidade) AS QuantidadeVendas
+FROM ItensPedido ip
+JOIN Produtos p ON ip.ProdutoID = p.ProdutoID
+JOIN Marcas m ON p.MarcaID = m.MarcaID
+JOIN Pedidos pd ON ip.PedidoID = pd.PedidoID
+JOIN Lojas l ON pd.LojaID = l.LojaID
+GROUP BY l.Nome, m.Nome
+ORDER BY l.Nome, m.Nome;
+
+5 - Listar os Funcionários que não estejam relacionados a um Pedido:
+
+SELECT f.FuncionarioID, f.Nome
+FROM Funcionarios f
+LEFT JOIN Pedidos p ON f.FuncionarioID = p.FuncionarioID
+WHERE p.PedidoID IS NULL;
